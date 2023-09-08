@@ -7,7 +7,10 @@ body {
 }
 
 /*
- Get rid of annoying focus rings.
+ Get rid of focus rings.
  Probably don't do this in a real project for accessibility
   purposes, but for our case it's fine.
 */
+:focus:not(.focus-visible) {
+  outline: none;
+}
