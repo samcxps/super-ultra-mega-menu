@@ -93,7 +93,7 @@ const MegaMenuComponent = forwardRef<
     onOpenChange: setIsOpen,
     placement: isNested ? "right-start" : "bottom-start",
     middleware: [
-      offset({ mainAxis: isNested ? 0 : 4, alignmentAxis: isNested ? -4 : 0 }),
+      offset({ mainAxis: isNested ? 0 : 5, alignmentAxis: isNested ? -5 : 0 }),
       flip(),
       shift(),
     ],
@@ -101,8 +101,7 @@ const MegaMenuComponent = forwardRef<
   });
 
   const hover = useHover(context, {
-    enabled: isNested,
-    delay: { open: 75 },
+    delay: { open: isNested ? 75 : 500 },
     handleClose: safePolygon({ blockPointerEvents: true }),
   });
 
@@ -180,7 +179,11 @@ const MegaMenuComponent = forwardRef<
         {...getReferenceProps(
           parent.getItemProps({
             ...props,
-            onFocus(event: React.FocusEvent<HTMLButtonElement>) {
+            onClick(event) {
+              event.stopPropagation();
+              tree?.events.emit("click");
+            },
+            onFocus(event) {
               // @ts-ignore
               props.onFocus?.(event);
               setHasFocusInside(false);
@@ -189,9 +192,12 @@ const MegaMenuComponent = forwardRef<
           })
         )}
       >
-        <div className="flex items-center gap-4">
-          {title}
-          {isNested && <ChevronRightIcon aria-hidden className="h-4 w-4 " />}
+        <div className="relative">
+          <div className="flex items-center justify-between">
+            {title}
+            {isNested && <ChevronRightIcon aria-hidden className="h-4 w-4 " />}
+          </div>
+          <div className="hidden group-hover:block absolute bg-black h-0.5 w-full" />
         </div>
       </Link>
       <MenuContext.Provider
@@ -216,7 +222,12 @@ const MegaMenuComponent = forwardRef<
                   ref={refs.setFloating}
                   className="bg-white py-4 border-2 border-black w-32"
                   style={floatingStyles}
-                  {...getFloatingProps()}
+                  {...getFloatingProps({
+                    onClick(event) {
+                      event.stopPropagation();
+                      tree?.events.emit("click");
+                    },
+                  })}
                 >
                   <div className="flex flex-col space-y-2">{children}</div>
                 </div>
