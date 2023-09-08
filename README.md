@@ -1,7 +1,5 @@
 # Super Ultra Mega Menu
 
-[See the blog post(s) to read more](https://google.com)
-
 ### Tags
 
 Checkout the different tagged versions to see the progression of this project
