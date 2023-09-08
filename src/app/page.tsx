@@ -1,14 +1,11 @@
-import MenuMaker from "@/components/MenuMaker";
-import { NAVIGATION_DATA } from "@/data";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="p-24">
-      <nav className="space-x-12">
-        {NAVIGATION_DATA.map((l1, idx) => (
-          <MenuMaker page={l1} key={`menu-maker-${idx}`} />
-        ))}
-      </nav>
+    <main className="p-24 flex flex-col gap-4">
+      <Link href="/part-one">Part One</Link>
+      <Link href="/part-two">Part Two</Link>
+      <Link href="/part-three">Part Three</Link>
     </main>
   );
 }

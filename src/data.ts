@@ -18,8 +18,14 @@ export const NAVIGATION_DATA = [
               },
               {
                 level: 4,
-                title: "L4-1",
-                children: [],
+                title: "L4-2",
+                children: [
+                  {
+                    level: 5,
+                    title: "L5-1",
+                    children: [],
+                  },
+                ],
               },
             ],
           },

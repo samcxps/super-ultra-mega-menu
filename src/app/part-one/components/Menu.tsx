@@ -16,13 +16,11 @@ import Link from "next/link";
 
 import {
   autoUpdate,
-  flip,
   FloatingFocusManager,
   FloatingList,
   FloatingNode,
   FloatingPortal,
   FloatingTree,
-  offset,
   safePolygon,
   shift,
   useClick,
@@ -92,11 +90,7 @@ const MegaMenuComponent = forwardRef<
     open: isOpen,
     onOpenChange: setIsOpen,
     placement: isNested ? "right-start" : "bottom-start",
-    middleware: [
-      offset({ mainAxis: isNested ? 0 : 5, alignmentAxis: isNested ? -5 : 0 }),
-      flip(),
-      shift(),
-    ],
+    middleware: [shift()],
     whileElementsMounted: autoUpdate,
   });
 
@@ -132,9 +126,9 @@ const MegaMenuComponent = forwardRef<
     [hover, click, role, dismiss, listNavigation, typeahead]
   );
 
-  // Event emitter allows you to communicate across tree components.
-  // This effect closes all menus when an item gets clicked anywhere
-  // in the tree.
+  /**
+   * Watch for clicks within tree
+   */
   useEffect(() => {
     if (!tree) return;
 
@@ -157,6 +151,9 @@ const MegaMenuComponent = forwardRef<
     };
   }, [tree, nodeId, parentId]);
 
+  /**
+   * Watch for menu open
+   */
   useEffect(() => {
     if (isOpen && tree) {
       tree.events.emit("menuopen", { parentId, nodeId });
@@ -175,7 +172,7 @@ const MegaMenuComponent = forwardRef<
         data-open={isOpen ? "" : undefined}
         data-nested={isNested ? "" : undefined}
         data-focus-inside={hasFocusInside ? "" : undefined}
-        className={isNested ? menuItemClasses : "text-black "}
+        className={isNested ? menuItemClasses : "text-black"}
         {...getReferenceProps(
           parent.getItemProps({
             ...props,
@@ -220,7 +217,7 @@ const MegaMenuComponent = forwardRef<
               >
                 <div
                   ref={refs.setFloating}
-                  className="bg-white py-4 border-2 border-black w-32"
+                  className="bg-white py-4 border-2 border-black w-32 h-[var(--menu-max-height)]"
                   style={floatingStyles}
                   {...getFloatingProps({
                     onClick(event) {
